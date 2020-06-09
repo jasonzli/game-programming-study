@@ -95,24 +95,3 @@ public class UndoCommand : Command
 
 
 }
-/*
-public class MoveCommand : Command
-{
-    public override void Execute(Transform targetTransform, Command command)
-    {
-        Move(targetTransform);
-    }
-
-    public override void Undo(Transform targetTransform, Command command)
-    {
-        UnMove(targetTransform);
-    }
-
-    public void Move(Transform targetTransform){
-
-    }
-    public  void UnMove(Transform targetTransform){
-
-    }
-
-}*/

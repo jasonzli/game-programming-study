@@ -5,8 +5,8 @@ using CommandPattern;
 
 public class InputHandler : MonoBehaviour
 {
-    [SerializeField]
-    private float MoveDistance = 1f;
+    //[SerializeField]
+    //private float MoveDistance = 1f;
     private Transform boxTransform;
     
     //Stores all commands for undo
@@ -15,17 +15,16 @@ public class InputHandler : MonoBehaviour
 
     #region Buttons
     private Command buttonW, buttonA, buttonS, buttonD, buttonR;
-    
+    private List<Command> buttonList = new List<Command>();        
+    private List<Command> commandList = new List<Command>() 
+        {new MoveUp(), new MoveDown(), new MoveRight(), new MoveLeft()};
     #endregion
 
     void Start(){
         boxTransform = GetComponent<Transform>();
         //Command binding has to happen in the start function
-        
-        buttonW = new MoveUp();
-        buttonS = new MoveDown();
-        buttonA = new MoveLeft();
-        buttonD = new MoveRight();
+        ShuffleInputs();
+        buttonList = new List<Command> {buttonW, buttonA, buttonS, buttonD};
         buttonR = new UndoCommand();
     }
 
@@ -36,7 +35,7 @@ public class InputHandler : MonoBehaviour
     }
 
     void ReadInput(){
-        
+
         if (Input.GetKeyDown(KeyCode.W)){
             buttonW.Execute(boxTransform,buttonW);
         }
@@ -51,7 +50,15 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R)){
             buttonR.Execute(boxTransform,buttonR);
+            ShuffleInputs();
         }
-        
+
+    }
+
+    void ShuffleInputs(){
+        buttonW = commandList[Random.Range(0,2)];
+        buttonS = commandList[Random.Range(0,2)];
+        buttonA = commandList[Random.Range(2,4)];
+        buttonD = commandList[Random.Range(2,4)];
     }
 }

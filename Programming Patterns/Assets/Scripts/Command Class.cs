@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace CommandPattern{
     
+//This generic pattern for me is an execution command that can be called after a reference to a Transform is passed
+//It performs the execution *to* the actor, rather than the actor performing the action itself.
 public abstract class Command
 {
     public abstract void Execute(Transform actorTransform, Command command);
@@ -17,8 +19,28 @@ public abstract class Command
 
 public abstract class MoveCommand : Command
 {
+    //private is class specific
+    //protected lets us propagate this variable down the line.
     protected float moveDistance = 1f;
     protected abstract void Move(Transform actorTransform);
+
+}
+
+public class MoveTowardsTarget : MoveCommand
+{
+    protected Transform target { get; }
+    //you can do custom constructors in implementations
+    public MoveTowardsTarget(Transform movementTarget){
+        target = movementTarget;
+    }
+
+    public override void Execute (Transform actorTransform, Command command){
+
+    }
+
+    protected override void Move (Transform actorTransform){
+
+    }
 
 }
 
@@ -35,6 +57,7 @@ public class MoveUp : MoveCommand
         actorTransform.Translate(-actorTransform.up*moveDistance);
     }
 }
+
 public class MoveDown : MoveCommand
 {
     public override void Execute(Transform actorTransform, Command command){

@@ -18,13 +18,18 @@ public class InputHandler : MonoBehaviour
     private List<Command> buttonList = new List<Command>();        
     private List<Command> commandList = new List<Command>() 
         {new MoveUp(), new MoveDown(), new MoveRight(), new MoveLeft()};
+    
+    private ShuffleBag<Command> commandBag;
     #endregion
 
     void Start(){
         boxTransform = GetComponent<Transform>();
+        commandBag = new ShuffleBag<Command>(commandList.Count);
+        foreach(Command c in commandList){
+            commandBag.Add(c,1);
+        }
         //Command binding has to happen in the start function
-        ShuffleInputs();
-        buttonList = new List<Command> {buttonW, buttonA, buttonS, buttonD};
+        ShuffleInputs(commandBag);
         buttonR = new UndoCommand();
     }
 
@@ -50,15 +55,18 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R)){
             buttonR.Execute(boxTransform,buttonR);
-            ShuffleInputs();
+            ShuffleInputs(commandBag);
         }
 
     }
 
-    void ShuffleInputs(){
-        buttonW = commandList[Random.Range(0,2)];
-        buttonS = commandList[Random.Range(0,2)];
-        buttonA = commandList[Random.Range(2,4)];
-        buttonD = commandList[Random.Range(2,4)];
+    void ShuffleInputs(ShuffleBag<Command> bag){
+        //ideally this should work with the pointers?
+        //as is it works with a predefined set
+        //maybe this can be a use for enums
+        buttonW = bag.Next();
+        buttonA = bag.Next();
+        buttonS = bag.Next();
+        buttonD = bag.Next();
     }
 }

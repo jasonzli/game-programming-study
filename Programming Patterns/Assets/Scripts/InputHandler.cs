@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using CommandPattern;
 
 public class InputHandler : MonoBehaviour
@@ -12,6 +13,7 @@ public class InputHandler : MonoBehaviour
     //Stores all commands for undo
     [SerializeField]
     public Stack<Command> previousCommands = new Stack<Command>();
+    public List<RectTransform> inputTextTransform;
 
     #region Buttons
     private Command buttonW, buttonA, buttonS, buttonD, buttonR;
@@ -55,6 +57,8 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R)){
             buttonR.Execute(boxTransform,buttonR);
+        }
+        if (Input.GetKeyDown(KeyCode.Space)){
             ShuffleInputs(commandBag);
         }
 
@@ -68,5 +72,13 @@ public class InputHandler : MonoBehaviour
         buttonA = bag.Next();
         buttonS = bag.Next();
         buttonD = bag.Next();
+        UpdateUI();
+    }
+
+    void UpdateUI(){
+        inputTextTransform[0].GetComponent<TextMeshProUGUI>().SetText($"W : {buttonW.GetType().Name}");
+        inputTextTransform[1].GetComponent<TextMeshProUGUI>().SetText($"S : {buttonS.GetType().Name}");
+        inputTextTransform[2].GetComponent<TextMeshProUGUI>().SetText($"A : {buttonA.GetType().Name}");
+        inputTextTransform[3].GetComponent<TextMeshProUGUI>().SetText($"D : {buttonD.GetType().Name}");
     }
 }

@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace CommandPattern{
     
-//This generic pattern for me is an execution command that can be called after a reference to a Transform is passed
+//This generic pattern for me is an execution command that can be called after 
+//a reference to a Transform is passed. An interface implementation could be better.
 //It performs the execution *to* the actor, rather than the actor performing the action itself.
 public abstract class Command
 {

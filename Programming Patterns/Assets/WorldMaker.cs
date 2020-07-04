@@ -5,49 +5,37 @@ using UnityEngine;
 
 public class WorldMaker : MonoBehaviour
 {
-    List<Terrain> world = new List<Terrain>();
-    List<Terrain> types = new List<Terrain>();
-    Terrain grassTerrain_;
-    Terrain hillTerrain_;
-    Terrain riverTerrain_;
+    List<Transform> cubes = new List<Transform>();
+    [SerializeField]
+    private Transform cubePrefab;
 
-    MaterialPropertyBlock riverBlock;
-    MaterialPropertyBlock hillBlock;
-    MaterialPropertyBlock grassBlock;
+    [SerializeField]
+    private List<CubeData> cubeData = new List<CubeData>();
 
-    private int worldSize = 100;
+    [SerializeField]
+    private int worldSize;
     // Start is called before the first frame update
     void Awake()
     {
-        riverBlock = new MaterialPropertyBlock();
-        hillBlock = new MaterialPropertyBlock();
-        grassBlock = new MaterialPropertyBlock();
-
-        riverBlock.SetColor("_Albedo", new Color (0f,119f,190f));
-        hillBlock.SetColor("_Albedo", new Color (237f,201f,175f));
-        grassBlock.SetColor("_Albedo", new Color (124f,252f,0f));
-
-        grassTerrain_ = new Terrain(1, false, grassBlock);
-        hillTerrain_ = new Terrain(2, false, hillBlock);
-        riverTerrain_ = new Terrain(0, true, riverBlock);
-
-        types.Add(grassTerrain_);
-        types.Add(hillTerrain_);
-        types.Add(riverTerrain_);
+        
 
     }
 
     void Start()
     {
-        MakeWorld();
+        cubes = MakeWorld(cubePrefab, worldSize);
     }
 
-    void MakeWorld()
+    //you should have seperated this
+    List<Transform> MakeWorld(Transform worldPrefab, int size)
     {
-        for (int i = 0; i < worldSize; i++){
-            Terrain newTerrain = types[Random.Range(0,2)];
-            world.Add(newTerrain);
-
+        var world = new List<Transform>();
+        for (int i = 0; i < size; i++){
+            for (int j = 0 ; j < size; j ++){
+                var newTerrain = Instantiate(cubePrefab,new Vector3((float) i , (float) j, 0f),Quaternion.identity,transform);
+                world.Add(newTerrain);
+            }
         }
+        return world;
     }
 }

@@ -33,6 +33,8 @@ public class WorldMaker : MonoBehaviour
         for (int i = 0; i < size; i++){
             for (int j = 0 ; j < size; j ++){
                 var newTerrain = Instantiate(cubePrefab,new Vector3((float) i , (float) j, 0f),Quaternion.identity,transform);
+                newTerrain.GetComponent<Terrain>().Info = cubeData[Random.Range(0,3)];
+                //newTerrain.GetComponent<Terrain>().BakeTerrainProperties();
                 world.Add(newTerrain);
             }
         }

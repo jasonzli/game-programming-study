@@ -2,23 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Terrain
+public class Terrain : MonoBehaviour
 {   
-    public Terrain(CubeData data){
-        //make sure that using enums actually uses the field, not the enum declaration
-        Height =  (int) data.cubeHeight;
-        IsWater = data.IsWater;
-        TerrainBlock = setMaterialPropertyBlockColor(new MaterialPropertyBlock(), data.color);
+    [SerializeField]
+    private CubeData info;
+
+    private Renderer _renderer;
+
+    [SerializeField]
+    SetCubeInfo setCubeInfoPanel;
+    //autoproperties
+    //are: public <type> #Name# {get; set;}
+    public CubeData Info { set {this.info = value;}}
+
+    void Start()
+    {
+        _renderer = GetComponent<Renderer>();
+        setCubeInfoPanel = GameObject.FindGameObjectWithTag("UICanvas").GetComponent<SetCubeInfo>();
+        BakeTerrainProperties();
+
+    }
+
+    void OnMouseDown(){
+        setCubeInfoPanel.OpenCubePanel();
+        setCubeInfoPanel.cubeHeight.text = info.Height.ToString();
+        setCubeInfoPanel.cubeType.text = info.Type;
+        setCubeInfoPanel.isWater.text = info.IsWater ? "Water" : "Not Water";
+        setCubeInfoPanel.color.text = info.Color.ToString();
+    }
+
+    void BakeTerrainProperties(){
+        var MaterialProp = new MaterialPropertyBlock();
+        MaterialProp.SetColor("_Color", info.Color);
+        _renderer.SetPropertyBlock(MaterialProp);
         
+        transform.Translate(-Vector3.forward * (int) info.Height);
     }
 
-    public int Height{get ; private set;}
-    public bool IsWater{get ; private set;}
-    public MaterialPropertyBlock TerrainBlock {get; private set;}
 
-    MaterialPropertyBlock setMaterialPropertyBlockColor(MaterialPropertyBlock block, Color color){
-        block.SetColor("_Color", color);
-        block.SetColor("_Albedo", color);
-        return block;
-    }
 }

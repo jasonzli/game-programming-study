@@ -12,11 +12,21 @@ public class CubeData : ScriptableObject
     public enum HEIGHT {Low, Medium, High}
 
     [SerializeField]
-    public HEIGHT cubeHeight {get; private set;}
+    private HEIGHT cubeHeight;
+
     [SerializeField]
-    public string cubeType {get; private set;}
+    private string cubeType;
     [SerializeField]
-    public bool IsWater { get; private set;}
+    private bool isWater;
     [SerializeField]
-    public Color color {get; private set;}
+    private Color terrainColor;
+
+
+
+    public HEIGHT Height {get {return cubeHeight;}}
+    public string Type{get {return cubeType;}}
+    public bool IsWater {get {return isWater;}}
+    public Color Color {get {return terrainColor;}}
+
+
 }

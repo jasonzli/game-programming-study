@@ -12,6 +12,9 @@ public class SetCubeInfo : MonoBehaviour
     public TextMeshProUGUI isWater;
     public TextMeshProUGUI color;
 
+    void Start(){
+        CloseCubePanel();
+    }
 
     public void OpenCubePanel()
     {

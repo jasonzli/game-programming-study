@@ -23,9 +23,22 @@ public class WorldMaker : MonoBehaviour
 
     void Start()
     {
+        FillCubes();
+    }
+
+
+    private void FillCubes(){
         cubes = MakeWorld(cubePrefab, worldSize);
     }
 
+    private void EmptyCubes(){
+        cubes = DeleteWorld(ref cubes);
+    }
+
+    public void NewWorld(){
+        EmptyCubes();
+        FillCubes();
+    }
     //you should have seperated this
     List<Transform> MakeWorld(Transform worldPrefab, int size)
     {
@@ -40,4 +53,14 @@ public class WorldMaker : MonoBehaviour
         }
         return world;
     }
+
+    List<Transform> DeleteWorld(ref List<Transform> world){
+        foreach (Transform piece in world){
+            Destroy(piece.gameObject);
+        }
+        
+        world.Clear();
+        return world;
+    }
+
 }

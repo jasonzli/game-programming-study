@@ -12,18 +12,11 @@ public class SceneSelect : MonoBehaviour
     [SceneNamePicker(showPath = false)]
     public string OtherSceneName;
     
-    public void GoToCommandScene(){
-        GoToScene("Command Scene");
-    }
-
-    public void GoToFlyWeightScene(){
-        GoToScene("Flyweight Scene");
-    }
 
     public void GoToPickScene(){
         GoToScene("Pick Scene");
     }
-    private void GoToScene(string sceneName){
+    public void GoToScene(string sceneName){
         SceneManager.LoadScene(sceneName);
     }
 }

@@ -12,7 +12,6 @@ public class WalkRight : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(speed);
         transform.Translate(Vector3.right * speed.value * Time.deltaTime);
     }
 }

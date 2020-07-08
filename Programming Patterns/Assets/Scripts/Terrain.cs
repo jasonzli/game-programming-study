@@ -5,7 +5,7 @@ using UnityEngine;
 public class Terrain : MonoBehaviour
 {   
     [SerializeField]
-    private CubeData info;
+    public CubeData info;
 
     private Renderer _renderer;
 

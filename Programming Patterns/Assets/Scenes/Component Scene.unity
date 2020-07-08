@@ -2685,9 +2685,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2de62cd22d910b4aa4f44cf8b19f86a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ShapePrimitive: {fileID: 0}
-  _MovementComponent: {fileID: 0}
-  _BonusComponent: {fileID: 0}
+  _ShapePrimitive: {fileID: 1055830512}
+  _MovementComponent: {fileID: 2055069871}
+  _BonusComponent: {fileID: 1994440005}
 --- !u!4 &1217195488
 Transform:
   m_ObjectHideFlags: 0

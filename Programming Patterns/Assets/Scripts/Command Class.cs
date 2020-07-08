@@ -15,6 +15,9 @@ public abstract class Command
     //It ceases to be a command that is carried out on any actor, but an actor's command
     //That would undo the benefit of the pattern
     
+    //separate the command from the execution - it's not a concern for the execution
+    //remember that it should be reified CALL not just the point to method
+    //the command should be constructed with what it needs but the execution is acting on that
     public virtual void Undo(Transform actorTransform){}
 }
 

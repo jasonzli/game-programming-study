@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeLeft: 5
+  _Pooled: 1
 --- !u!54 &3394095288887445939
 Rigidbody:
   m_ObjectHideFlags: 0

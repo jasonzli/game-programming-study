@@ -6,11 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneSelect : MonoBehaviour
 {
 
-    [SceneNamePicker]
-    public string SceneName;
 
-    [SceneNamePicker(showPath = false)]
-    public string OtherSceneName;
     
 
     public void GoToPickScene(){

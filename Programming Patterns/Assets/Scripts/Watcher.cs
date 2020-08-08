@@ -18,7 +18,6 @@ public class Watcher : MonoBehaviour
     Quaternion targetRotation;
 
     void OnEnable(){
-
         _plane.GetComponent<CollisionObserver>().PlaneIntersected += LookToIntersection;
     }
 

@@ -5,11 +5,14 @@ using System;
 
 public class Lifetime : MonoBehaviour
 {
+    
+
     public float lifeTime = 5;
-    public bool _Pooled;
+    [SerializeField]
+    public  float timeLeft = 0 ;
 
     [SerializeField]
-    private float timeLeft = 0;
+    public bool _Pooled;
 
     private void Start(){
         StartCoroutine(Countdown());
@@ -36,3 +39,4 @@ public class Lifetime : MonoBehaviour
             Destroy(gameObject);
     }
 }
+

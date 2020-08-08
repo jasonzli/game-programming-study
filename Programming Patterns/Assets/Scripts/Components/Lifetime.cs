@@ -11,6 +11,9 @@ public class Lifetime : MonoBehaviour
     [SerializeField]
     private float timeLeft = 0;
 
+    [SerializeField]
+    public  float timeLeft = 0 ;
+
     private void Start(){
         StartCoroutine(Countdown());
     }

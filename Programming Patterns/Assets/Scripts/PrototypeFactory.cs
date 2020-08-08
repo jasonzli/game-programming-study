@@ -27,7 +27,7 @@ public class PrototypeFactory : MonoBehaviour
                 go.AddComponent<Rigidbody>();
             }
             go.AddComponent<Lifetime>();
-            go.GetComponent<Lifetime>().timeLeft = 20f + Random.Range(-2f, 2f);
+            go.GetComponent<Lifetime>().timeLeft = 12f + Random.Range(-2f, 2f);
         }
         
     }

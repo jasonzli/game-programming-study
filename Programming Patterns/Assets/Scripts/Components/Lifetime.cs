@@ -5,9 +5,6 @@ using System;
 
 public class Lifetime : MonoBehaviour
 {
-    public float lifeTime = 5;
-    public bool _Pooled;
-
     [SerializeField]
     private float timeLeft = 0;
 

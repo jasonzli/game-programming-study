@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
 
-public class ComponentSelection : MonoBehaviour
+public class GetClicksOutside : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +12,7 @@ public class ComponentSelection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        GetComponent<TMP_Text>().text = 
+        $"Other Scene Clicks: {StatTracker.Instance.ClickCountOutside}";
     }
 }

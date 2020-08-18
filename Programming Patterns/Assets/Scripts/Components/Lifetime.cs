@@ -7,7 +7,7 @@ public class Lifetime : MonoBehaviour
 {
     
 
-    public float lifeTime = 5;
+    public float lifeTime = 7.5f;
     [SerializeField]
     public  float timeLeft = 0 ;
 

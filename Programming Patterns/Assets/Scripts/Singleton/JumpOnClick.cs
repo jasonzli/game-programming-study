@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class JumpOnClick : MonoBehaviour
 {
+
+    public float jumpForce = 300f;
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    public void JumpUp(){
+        GetComponent<Rigidbody>().AddForce(transform.up * jumpForce);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

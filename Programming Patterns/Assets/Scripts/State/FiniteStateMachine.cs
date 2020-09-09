@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System;
+using System.Reflection;
 
 
 //the Infallible Code approach that uses Coroutines
@@ -12,7 +13,7 @@ using System;
 //is a matter of debate.
 namespace StateMachine{
 
-    public class FiniteStateMachine<TContext> : MonoBehaviour{
+    public class FiniteStateMachine<TContext> where TContext : MonoBehaviour{
 
         State<TContext> CurrentState;
         State<TContext> PendingState;
@@ -25,23 +26,20 @@ namespace StateMachine{
 
         public void ChangePendingState(State<TContext> _pendingState) {
             if (_pendingState == null) return;
-            Debug.Log("Passed Pending");
             PendingState = _pendingState;
         }
 
         public void ChangeState ( State<TContext> newState ){
+            
             if (newState == null) return;
-            if (CurrentState == null) return;
-            CurrentState.Exit(this);
-
+            if (CurrentState != null) CurrentState.Exit();
             CurrentState = newState;
-            CurrentState.Enter(this);
+            CurrentState.Enter();
         }
         
         public void Update() {
             ChangeState(PendingState);
-
-            CurrentState?.Update(this);
+            CurrentState.Update();
 
             ChangeState(PendingState);
         }
@@ -50,10 +48,10 @@ namespace StateMachine{
     }
 
     //dependency injection method
-    public abstract class State<TContext>{
-        public virtual void Enter(FiniteStateMachine<TContext> context) {}
-        public virtual void Update(FiniteStateMachine<TContext> context) {}
-        public virtual void Exit(FiniteStateMachine<TContext> context){}
+    public abstract class State<TContext> where TContext : MonoBehaviour {
+        public virtual void Enter() {}
+        public virtual void Update() {}
+        public virtual void Exit(){}
 
     }
 

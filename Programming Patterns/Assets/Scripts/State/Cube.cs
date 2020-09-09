@@ -9,7 +9,7 @@ public class Cube : MonoBehaviour{
 
     private void Start() {
         FSM = new FiniteStateMachine<Cube>(this);
-        FSM.ChangeState(new Idle<Cube>(FSM));
+        FSM.ChangePendingState(new Idle<Cube>(this));
     }
 
     private void Update(){
@@ -17,24 +17,26 @@ public class Cube : MonoBehaviour{
     }
 }
 
-public class Idle<TContext> : State<TContext>{
+public class Idle<TContext> : State<TContext> where TContext : MonoBehaviour{
     
-    private FiniteStateMachine<TContext> ParentMachine;
-    public Idle (FiniteStateMachine<TContext> _ParentMachine){
-        ParentMachine = _ParentMachine;
+    private TContext Parent;
+    public Idle (TContext _Parent){
+        Parent = _Parent;
     }
 
-    public void Enter(){
+    public override void Enter(){
+    }
+    public override void Update(){
+        
+        HandleInput(Parent);
+    }
+
+    void HandleInput(TContext context){
+        
         Debug.Log($"Machine has entered Idle state");
-    }
-    public void Update(){
-        HandleInput(ParentMachine);
-    }
-
-    void HandleInput(FiniteStateMachine<TContext> context){
         if (Input.GetKeyDown("space")){
-            //ParentMachine.ChangeState(new Jumping<TContext>());
-            ParentMachine.transform.GetComponent<Rigidbody>().AddForce(ParentMachine.transform.up * 250);
+            //Parent.ChangeState(new Jumping<TContext>());
+            Parent.transform.GetComponent<Rigidbody>().AddForce(Parent.transform.up * 250);
         }
     }
 }

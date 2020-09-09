@@ -1,4 +1,6 @@
 using System.Collections;
+using UnityEngine;
+using System;
 
 
 //This is the basic State and state machine,
@@ -7,17 +9,12 @@ using System.Collections;
 //is to guarantee that things are in place before continuing.
 //If you halt execution of other code, then it's important to ... not Coroutine it?
 namespace StateMachine{
-    public abstract class State{
+    public abstract class State<TContext>{
 
-        protected FiniteStateMachine Context;
-        
-        public State( FiniteStateMachine context ){
-            Context = context; // set to context
-        }
+        //States have FSM contexts
+        internal FiniteStateMachine<TContext> Parent {get; set;}
 
-        public void SetContext ( FiniteStateMachine context ){
-            Context = context;
-        }
+        protected TContext Context {get {return Parent._context;}}
 
         public virtual void Enter(){
             UnityEngine.Debug.Assert(Context != null, "State has no context!");

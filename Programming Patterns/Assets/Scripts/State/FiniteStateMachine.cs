@@ -12,22 +12,20 @@ using System;
 //is a matter of debate.
 namespace StateMachine{
 
-    public abstract class FiniteStateMachine : MonoBehaviour{
+    public class FiniteStateMachine<TContext> : MonoBehaviour{
 
-        //States carry reference to the parent context now.
-        //This is actually closer to the outline in the Game programming patterns book
+        public readonly TContext _context;
         //This way the state itself has a pointer to it (and in this case it is a reference)
         //Dependency is injected but not dynamically
-        public State CurrentState {get; private set;}
-        private State _pendingState;
-
-        public FiniteStateMachine(State StartingState){
-            CurrentState = StartingState;
+        public State<TContext> CurrentState {get; private set;}
+        private State<TContext> _pendingState;
+        public FiniteStateMachine(TContext context)
+        {
+            _context = context;
         }
 
         public void Start(){
             UnityEngine.Debug.Assert(CurrentState != null, "FSM in null state! Failure to set");
-            CurrentState?.Enter();
         }
 
         public void Update(){
@@ -38,7 +36,7 @@ namespace StateMachine{
 
             TransitionToPendingState();
         }
-        public void SetPendingState(State s){
+        public void SetPendingState(State<TContext> s){
             _pendingState = s;
         }
 
@@ -54,21 +52,22 @@ namespace StateMachine{
 
         }
         
-
+        
         //So this stuff is to let the state machine directly change from anywhere
         //This is not using a state to change it I guess?
-        public void TransitionTo<TState>() where TState : State{
+        public void TransitionTo<TState>() where TState : State<TContext>{
             _pendingState = CreateState<TState>();
         }
 
         //Deviation from GPP ghirigoro: we do not use instance
         //and our states do not have parents, but have contexts instead
         //and can dynamically move around at runtime
-        private TState CreateState<TState>() where TState : State{
+        private TState CreateState<TState>() where TState : State<TContext>{
             var newState = Activator.CreateInstance<TState>();
-            newState.SetContext(this);
+            newState.Parent = this;
             return newState;
         }
+        
     }
 
 }

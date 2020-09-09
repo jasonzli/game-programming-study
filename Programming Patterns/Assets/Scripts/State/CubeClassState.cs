@@ -85,6 +85,15 @@ public class FSM<TContext>
         return newState;
     }
 
+ /*
+ you have to stop hating women just for having fun
+ no one is asking for your opinion
+ or your negativity
+ You're just a misogynist
+ It reveals your ugly heart
+
+ */
+
     //State is defined as part of the FSM class
     //This way State is never created outside of it.
     public abstract class State

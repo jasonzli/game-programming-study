@@ -2,23 +2,46 @@ using System.Collections;
 using UnityEngine;
 using StateMachine;
 
-public class CubeStateMachine : FiniteStateMachine{
+public class Cube : MonoBehaviour{
 
-    //CubeStateMachine has a state that it delegates function calls to
+    public FiniteStateMachine<Cube> FSM {get; set;}
 
     void Start(){
-        CurrentState = new Idle(this);
+        FSM = new FiniteStateMachine<Cube>(this);
     }
     
 }
 
-public class Idle : State {
-    public Idle(FiniteStateMachine cubeStateMachine) : base(cubeStateMachine)
-    {
-        //gives access to a context
+public class Idle<Cube> : State<Cube> {//declare that idle is a state of a cube
+  
+    public Idle(){
+
     }
 
-    public override void Start(){
+    public override void Enter(){
+
+    }
+
+    public override void Update()
+    {
+        HandleInput();
+    }
+
+    private void HandleInput(){
+        if (Input.GetKeyDown("space")){
+            Context.GetComponent<Rigidbody>().AddForce(transform.up * 250);
+            CubeState = EnumState.STATE_JUMPING;
+        }
+    }
+}
+
+public class InAir<Cube> : State<Cube> {//declare that idle is a state of a cube
+  
+    public Idle(){
         
+    }
+
+    public override void Enter(){
+
     }
 }

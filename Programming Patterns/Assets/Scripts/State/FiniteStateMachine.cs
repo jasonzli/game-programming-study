@@ -14,60 +14,47 @@ namespace StateMachine{
 
     public class FiniteStateMachine<TContext> : MonoBehaviour{
 
-        public readonly TContext _context;
-        //This way the state itself has a pointer to it (and in this case it is a reference)
-        //Dependency is injected but not dynamically
-        public State<TContext> CurrentState {get; private set;}
-        private State<TContext> _pendingState;
-        public FiniteStateMachine(TContext context)
-        {
-            _context = context;
+        State<TContext> CurrentState;
+        State<TContext> PendingState;
+
+        public TContext context;
+
+        public FiniteStateMachine (TContext _context){
+            context = _context;
         }
 
-        public void Start(){
-            UnityEngine.Debug.Assert(CurrentState != null, "FSM in null state! Failure to set");
-        }
-
-        public void Update(){
-            TransitionToPendingState();
-            UnityEngine.Debug.Assert(CurrentState != null, "FSM in null state! Failure to set");
-
-            CurrentState.Update();
-
-            TransitionToPendingState();
-        }
-        public void SetPendingState(State<TContext> s){
-            _pendingState = s;
-        }
-
-        private void TransitionToPendingState(){
+        public void ChangePendingState(State<TContext> _pendingState) {
             if (_pendingState == null) return;
+            Debug.Log("Passed Pending");
+            PendingState = _pendingState;
+        }
+
+        public void ChangeState ( State<TContext> newState ){
+            if (newState == null) return;
             if (CurrentState == null) return;
+            CurrentState.Exit(this);
 
-            CurrentState.Exit();
-
-            CurrentState = _pendingState;
-            CurrentState.Enter();
-            _pendingState = null;
-
+            CurrentState = newState;
+            CurrentState.Enter(this);
         }
         
-        
-        //So this stuff is to let the state machine directly change from anywhere
-        //This is not using a state to change it I guess?
-        public void TransitionTo<TState>() where TState : State<TContext>{
-            _pendingState = CreateState<TState>();
+        public void Update() {
+            ChangeState(PendingState);
+
+            CurrentState?.Update(this);
+
+            ChangeState(PendingState);
         }
 
-        //Deviation from GPP ghirigoro: we do not use instance
-        //and our states do not have parents, but have contexts instead
-        //and can dynamically move around at runtime
-        private TState CreateState<TState>() where TState : State<TContext>{
-            var newState = Activator.CreateInstance<TState>();
-            newState.Parent = this;
-            return newState;
-        }
-        
+
+    }
+
+    //dependency injection method
+    public abstract class State<TContext>{
+        public virtual void Enter(FiniteStateMachine<TContext> context) {}
+        public virtual void Update(FiniteStateMachine<TContext> context) {}
+        public virtual void Exit(FiniteStateMachine<TContext> context){}
+
     }
 
 }

@@ -26,6 +26,8 @@ namespace StateMachine{
 
         public void ChangePendingState(State<TContext> _pendingState) {
             if (_pendingState == null) return;
+            
+        Debug.Log("hello space bar");
             PendingState = _pendingState;
         }
 
@@ -39,6 +41,7 @@ namespace StateMachine{
         
         public void Update() {
             ChangeState(PendingState);
+        Debug.Log(CurrentState);
             CurrentState.Update();
 
             ChangeState(PendingState);

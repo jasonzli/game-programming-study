@@ -5,8 +5,8 @@ using StateMachine;
 
 public class Cube : MonoBehaviour{
 
-    FiniteStateMachine<Cube> FSM;
-
+    FiniteStateMachine<Cube> _FSM;
+    public FiniteStateMachine<Cube> FSM {get; private set;}
 
     [SerializeField] float maxJumpHeight = 10f;
     public float MaxJumpHeight {get; private set;}
@@ -25,12 +25,13 @@ public class Cube : MonoBehaviour{
     private void Update(){
         FSM.Update();
     }
+
 }
 
-public class Idle<Cube> : State<Cube> where Cube : MonoBehaviour{
+public class Idle<TContext> : State<TContext> where TContext : Cube{
     
-    private Cube Parent;
-    public Idle (Cube _Parent){
+    private TContext Parent;
+    public Idle (TContext _Parent){
         Parent = _Parent;
     }
 
@@ -41,37 +42,87 @@ public class Idle<Cube> : State<Cube> where Cube : MonoBehaviour{
         HandleInput(Parent);
     }
 
-    void HandleInput(Cube context){
+    void HandleInput(TContext context){
         
-        Debug.Log($"Machine has entered Idle state");
         if (Input.GetKeyDown("space")){
-            Parent.GetFSM().ChangeState(new Jumping<Cube>(Parent));
-            Parent.transform.GetComponent<Rigidbody>().AddForce(Parent.transform.up * 250);
+        Debug.Log("hello space bar");
+            Parent.FSM.ChangePendingState(new Jumping<Cube>(context));
         }
     }
 }
+
+public class Airborne<TContext> : State<TContext> where TContext : Cube{
+
+}
 //yeah the stuff after Jump<TContext> seems too redundant.
-public class Jumping<Cube> : State<Cube> where Cube : MonoBehaviour{
+public class Jumping<TContext> : Airborne<TContext> where TContext : Cube{
     
-    private Cube Parent;
+    private TContext Parent;
     
-    public Jumping (Cube _Parent){
+    public Jumping (TContext _Parent){
         Parent = _Parent;
     }
 
     public override void Enter(){
     }
     public override void Update(){
-        Parent.transform.position = Parent.transform.up * Parent.UpwardSpeed;
-        //HandleInput(Parent);
-    }
-
-    void HandleInput(Cube context){
+        Parent.transform.position += Parent.transform.up * Parent.UpwardSpeed * Time.deltaTime;
         
-        Debug.Log($"Machine has entered Idle state");
-        if (Input.GetKeyDown("space")){
-            //Parent.ChangeState(new Jumping<TContext>());
-            //Parent.transform.GetComponent<Rigidbody>().AddForce(Parent.transform.up * 250);
+        HandleInput(Parent);
+        
+        if (Parent.transform.position.y >= Parent.MaxJumpHeight){
+            //Parent.FSM.ChangePendingState(new Falling<Cube>(Parent));
         }
     }
+
+    void HandleInput(TContext context){
+        if (Input.GetKeyDown("space")){
+            
+            Parent.FSM.ChangePendingState(new SpinJump<Cube>(Parent));
+        }
+    }
+}
+
+public class Falling<TContext> : Airborne<TContext> where TContext : Cube{
+    
+    private TContext Parent;
+    
+    public Falling (TContext _Parent){
+        Parent = _Parent;
+    }
+
+    public override void Enter(){
+    }
+    public override void Update(){
+        Parent.transform.position += Parent.transform.up * -Parent.UpwardSpeed * Time.deltaTime;
+    }
+
+    void HandleInput(TContext context){
+        if (Input.GetKeyDown("space")){
+            Parent.FSM.ChangePendingState(new SpinJump<Cube>(Parent));
+        }
+    }
+}
+
+public class SpinJump<TContext> : Airborne<TContext> where TContext : Cube{
+    
+    private TContext Parent;
+    float startingHeight;
+    public SpinJump (TContext _Parent){
+        Parent = _Parent;
+        startingHeight = Parent.transform.position.y;
+    }
+
+    public override void Enter(){
+    }
+    public override void Update(){
+        Parent.transform.position += Parent.transform.up * Parent.UpwardSpeed *2* Time.deltaTime;
+        Parent.transform.Rotate(new Vector3( 0, 20f, 0));
+
+        if (Parent.transform.position.y >= startingHeight + 5f){
+            Parent.FSM.ChangePendingState(new Falling<Cube>(Parent));
+        }
+    }
+
+    
 }

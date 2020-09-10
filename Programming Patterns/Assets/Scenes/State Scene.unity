@@ -133,11 +133,10 @@ GameObject:
   - component: {fileID: 135378610}
   - component: {fileID: 135378609}
   - component: {fileID: 135378608}
-  - component: {fileID: 135378607}
-  - component: {fileID: 135378606}
   - component: {fileID: 135378605}
   - component: {fileID: 135378611}
   - component: {fileID: 135378612}
+  - component: {fileID: 135378606}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -171,20 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa3faec5cb896c488dfed38a381c78f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &135378606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135378603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0fb400064b45e04a85c61463773d482, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpForce: 300
---- !u!54 &135378607
+--- !u!54 &135378606
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -195,11 +181,11 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!65 &135378608
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -285,6 +271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1af4c8e2a1b71147a854ef789b81f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxJumpHeight: 10
+  upwardSpeed: 10
 --- !u!1 &162383195
 GameObject:
   m_ObjectHideFlags: 0

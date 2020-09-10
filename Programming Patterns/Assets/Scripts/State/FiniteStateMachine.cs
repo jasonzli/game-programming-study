@@ -27,7 +27,6 @@ namespace StateMachine{
         public void ChangePendingState(State<TContext> _pendingState) {
             if (_pendingState == null) return;
             
-        Debug.Log("hello space bar");
             PendingState = _pendingState;
         }
 
@@ -41,21 +40,21 @@ namespace StateMachine{
         
         public void Update() {
             ChangeState(PendingState);
-        Debug.Log(CurrentState);
+
+            Debug.Log(CurrentState);
             CurrentState.Update();
 
             ChangeState(PendingState);
         }
-
+        
 
     }
 
     //dependency injection method
     public abstract class State<TContext> where TContext : MonoBehaviour {
-        public virtual void Enter() {}
-        public virtual void Update() {}
+        public virtual void Enter(){}
+        public virtual void Update(){}
         public virtual void Exit(){}
-
     }
 
 }

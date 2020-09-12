@@ -16,6 +16,11 @@ public class GameBoard : MonoBehaviour
     private GameObject board;
     [SerializeField]
     public Transform Pieces {get; private set;}
+
+    //This is a property of the board, not the state
+    [SerializeField]
+    private Renderer floorRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +50,14 @@ public class GameBoard : MonoBehaviour
         Debug.Log("FSM has exited");
         m_fsm = null; //Actually clears the FSM
     }
+
+    public void ShuffleFloorColors(){
+        MaterialPropertyBlock newColor = new MaterialPropertyBlock();
+        newColor.SetColor("_Color", Random.ColorHSV());
+        newColor.SetFloat("_Glossiness", Random.Range(0f,1f));
+
+        floorRenderer.SetPropertyBlock(newColor);
+    }
 }
 
 //This setup state is a lot of work to basically jsut get the pieces in place
@@ -66,6 +79,7 @@ public class Setup : State{
     private Transform pieces;
     private Vector3 boardInitialPosition;
 
+
     
     int nextid;
     State nextState;
@@ -83,10 +97,12 @@ public class Setup : State{
     public override void Enter(){
         deltaTime = Time.deltaTime;
         base.Enter();
-        switch(moveType)
+        //There can be overlap as you can clearly see here
+        switch(moveType) 
         {
             case MoveType.MOVE_IN:
                 Debug.Log("Entering MoveIn state");
+                board.ShuffleFloorColors();
                 break;
             case MoveType.MOVE_OUT:
                 Debug.Log("Entering MoveOut state");
@@ -129,6 +145,7 @@ public class Setup : State{
 
     }
 
+    
 
 }
 

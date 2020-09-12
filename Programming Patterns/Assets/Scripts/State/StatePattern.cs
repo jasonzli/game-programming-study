@@ -37,7 +37,7 @@ namespace Patterns
         //*A dictionary is used to store these, a key value of unique IDs for states.
         //This lets us see the key
 
-        protected Dictionary<int, State> m_states;
+        protected Dictionary<int, State> m_states = new Dictionary<int, State>();
 
         protected State m_currentState;
         public FSM()
@@ -48,6 +48,10 @@ namespace Patterns
             //3.Fails if the key is not in the state machine
             //remember: FINITE
             m_states.Add(key,state);
+        }
+
+        public State GetState(int key){
+            return m_states[key];
         }
 
         public void SetCurrentState(State state){

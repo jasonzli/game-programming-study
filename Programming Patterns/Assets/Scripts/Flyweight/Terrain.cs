@@ -36,7 +36,7 @@ public class Terrain : MonoBehaviour
         MaterialProp.SetColor("_Color", info.Color);
         _renderer.SetPropertyBlock(MaterialProp);
         
-        transform.Translate(-Vector3.forward * (int) info.Height);
+        transform.Translate(Vector3.up * (int) info.Height);
     }
 
 

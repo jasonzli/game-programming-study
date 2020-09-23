@@ -45,7 +45,9 @@ public class WorldMaker : MonoBehaviour
         var world = new List<Transform>();
         for (int i = 0; i < size; i++){
             for (int j = 0 ; j < size; j ++){
-                var newTerrain = Instantiate(cubePrefab,new Vector3((float) i , (float) j, 0f),Quaternion.identity,transform);
+                Matrix4x4 local = transform.localToWorldMatrix;
+                Vector3 cubePos = local.MultiplyPoint(new Vector3(i,j,0));
+                var newTerrain = Instantiate(cubePrefab,cubePos,Quaternion.identity,transform);
                 newTerrain.GetComponent<Terrain>().Info = cubeData[Random.Range(0,3)];
                 //newTerrain.GetComponent<Terrain>().BakeTerrainProperties();
                 world.Add(newTerrain);

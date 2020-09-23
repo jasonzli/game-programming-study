@@ -19,10 +19,12 @@ public class InputHandler : MonoBehaviour
     private Command buttonW, buttonA, buttonS, buttonD, buttonR;
     private List<Command> buttonList = new List<Command>();        
     private List<Command> commandList = new List<Command>() 
-        {new MoveUp(), new MoveDown(), new MoveRight(), new MoveLeft()};
+        {new MoveForward(), new MoveBackward(), new MoveRight(), new MoveLeft()};
     
     private ShuffleBag<Command> commandBag;
     #endregion
+
+    public int MovementRange = 4;
 
     void Start(){
         boxTransform = GetComponent<Transform>();

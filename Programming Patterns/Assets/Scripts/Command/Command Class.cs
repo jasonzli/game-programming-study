@@ -28,26 +28,96 @@ public abstract class MoveCommand : Command
     protected float moveDistance = 1f;
     protected abstract void Move(Transform actorTransform);
 
-}
-
-public class MoveTowardsTarget : MoveCommand
-{
-    protected Transform target { get; }
-    //you can do custom constructors in implementations
-    public MoveTowardsTarget(Transform movementTarget){
-        target = movementTarget;
-    }
-
-    public override void Execute (Transform actorTransform, Command command){
-
-    }
-
-    protected override void Move (Transform actorTransform){
-
+    //Check all possible bounds
+    protected virtual bool AtBounds(Transform actorTransform, Vector3 direction){
+        int bound = actorTransform.gameObject.GetComponent<InputHandler>().MovementRange;
+        Vector3 newPos = actorTransform.position + direction*moveDistance;
+        int x = (int)newPos.x;
+        int z = (int)newPos.z;
+        if (x > bound || x < -bound) return true;
+        if (z > bound || z < -bound) return true;
+        return false;
     }
 
 }
 
+public class MoveForward : MoveCommand{
+    public override void Execute(Transform actorTransform, Command command)
+    {
+        //check if we are at a bound
+        if (AtBounds(actorTransform, actorTransform.forward)) return;
+        
+        Move(actorTransform);
+        actorTransform.gameObject.GetComponent<InputHandler>().previousCommands.Push(command);
+    }
+
+    public override void Undo(Transform actorTransform){
+        actorTransform.Translate(actorTransform.forward * -moveDistance);
+    }
+
+    protected override void Move(Transform actorTransform){
+        actorTransform.Translate(actorTransform.forward * moveDistance);
+    }
+    
+}
+public class MoveBackward : MoveCommand{
+    public override void Execute(Transform actorTransform, Command command)
+    {
+        //check if we are at a bound
+        if (AtBounds(actorTransform, -actorTransform.forward)) return;
+        
+        Move(actorTransform);
+        actorTransform.gameObject.GetComponent<InputHandler>().previousCommands.Push(command);
+    }
+
+    public override void Undo(Transform actorTransform){
+        actorTransform.Translate(actorTransform.forward * moveDistance);
+    }
+    protected override void Move(Transform actorTransform){
+        actorTransform.Translate(actorTransform.forward * -moveDistance);
+    }
+    
+}
+public class MoveLeft : MoveCommand{
+    public override void Execute(Transform actorTransform, Command command)
+    {
+        //check if we are at a bound
+        if (AtBounds(actorTransform, -actorTransform.right)) return;
+        
+        Move(actorTransform);
+        actorTransform.gameObject.GetComponent<InputHandler>().previousCommands.Push(command);
+    }
+
+    public override void Undo(Transform actorTransform){
+        actorTransform.Translate(actorTransform.right * moveDistance);
+    }
+    protected override void Move(Transform actorTransform){
+        actorTransform.Translate(actorTransform.right * -moveDistance);
+    }
+    
+}
+
+public class MoveRight : MoveCommand{
+    public override void Execute(Transform actorTransform, Command command)
+    {
+        //check if we are at a bound
+        if (AtBounds(actorTransform, actorTransform.right)) return;
+        
+        Move(actorTransform);
+        actorTransform.gameObject.GetComponent<InputHandler>().previousCommands.Push(command);
+    }
+
+    public override void Undo(Transform actorTransform){
+        actorTransform.Translate(actorTransform.right * -moveDistance);
+    }
+
+    protected override void Move(Transform actorTransform){
+        actorTransform.Translate(actorTransform.right * moveDistance);
+    }
+    
+}
+
+/*
 public class MoveUp : MoveCommand
 {
     public override void Execute(Transform actorTransform, Command command){
@@ -103,6 +173,7 @@ public class MoveLeft : MoveCommand
         actorTransform.Translate(actorTransform.right*moveDistance);
     }
 }
+*/
 
 //Undo is a non movement based command that runs the Undo command of a list of commands
 //from within an actor

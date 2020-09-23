@@ -17,6 +17,8 @@ public class GameBoard : MonoBehaviour
     [SerializeField]
     public Transform Pieces {get; private set;}
 
+    public Vector3[] piecePositions;
+
     //This is a property of the board, not the state
     [SerializeField]
     private Renderer floorRenderer;
@@ -25,6 +27,7 @@ public class GameBoard : MonoBehaviour
     void Start()
     {
         Pieces = transform.Find("Cube Group");
+        piecePositions = GetInitialPositions(Pieces);
         //FINALLY after declaring the state classes
         //create the three states and add them to the fsm
         m_fsm.Add((int)GameStates.SETUP, new Setup(m_fsm, this));
@@ -35,6 +38,32 @@ public class GameBoard : MonoBehaviour
         m_fsm.SetCurrentState(m_fsm.GetState((int)GameStates.SETUP));
     }
 
+    Vector3[] GetInitialPositions(Transform transformHolder){
+        Vector3[] result = new Vector3[transformHolder.childCount];
+
+        for (int i = 0; i < transformHolder.childCount ; i++){
+            result[i] = transformHolder.GetChild(i).localPosition;
+        }
+
+        return result;
+    }
+    public void RestoreInitialPositions(){
+        for (int i = 0; i < Pieces.childCount; i++){
+            Transform hero = Pieces.GetChild(i);
+            hero.localPosition = piecePositions[i];
+            hero.rotation = Quaternion.identity;
+            
+        }
+    }
+
+    public void RandomizeActivePieces(){
+        foreach (Transform hero in Pieces){
+            hero.gameObject.SetActive(true);
+            if (Random.Range(0,1f) < .4f){
+                hero.gameObject.SetActive(false);
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -79,7 +108,6 @@ public class Setup : State{
     private Transform pieces;
     private Vector3 boardInitialPosition;
 
-
     
     int nextid;
     State nextState;
@@ -102,6 +130,8 @@ public class Setup : State{
         {
             case MoveType.MOVE_IN:
                 Debug.Log("Entering MoveIn state");
+                board.RestoreInitialPositions();
+                board.RandomizeActivePieces();
                 board.ShuffleFloorColors();
                 break;
             case MoveType.MOVE_OUT:
@@ -109,6 +139,7 @@ public class Setup : State{
                 break;
         }
     }
+
 
     public override void Update() {
         deltaTime += Time.deltaTime;
@@ -169,9 +200,11 @@ public class Play : State {
 
     public override void Enter(){
         board.GetComponent<ClickObject>().enabled = true;
+        
         foreach (Transform hero in board.Pieces){
             hero.gameObject.GetComponent<CubeHero>().enabled = true;
-        }
+        } 
+
         base.Enter();
         Debug.Log("Entering Play State");
     }

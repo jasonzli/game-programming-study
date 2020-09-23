@@ -56,6 +56,12 @@ public class WorldMaker : MonoBehaviour
         return world;
     }
 
+    public void Bake(){
+        foreach(Transform c in cubes){
+            c.GetComponent<Terrain>()?.BakeTerrainProperties();
+        }
+    }
+
     List<Transform> DeleteWorld(ref List<Transform> world){
         foreach (Transform piece in world){
             Destroy(piece.gameObject);

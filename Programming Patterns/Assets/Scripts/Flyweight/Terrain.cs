@@ -14,29 +14,35 @@ public class Terrain : MonoBehaviour
     //autoproperties
     //are: public <type> #Name# {get; set;}
     public CubeData Info { set {this.info = value;}}
-
+    public Camera cam;
     void Start()
     {
+        cam = Camera.main;
         _renderer = GetComponent<Renderer>();
         setCubeInfoPanel = GameObject.FindGameObjectWithTag("UICanvas").GetComponent<SetCubeInfo>();
-        BakeTerrainProperties();
 
     }
 
-    void OnMouseDown(){
-        setCubeInfoPanel.OpenCubePanel();
-        setCubeInfoPanel.cubeHeight.text = info.Height.ToString();
-        setCubeInfoPanel.cubeType.text = info.Type;
+    public void Update(){
+
+    }
+
+    public void SendCubeData(){
+        setCubeInfoPanel?.OpenCubePanel();
+        if (setCubeInfoPanel == null) return;
+        
+        setCubeInfoPanel.cubeHeight.text = $"Height: {info.Height.ToString()}";
+        setCubeInfoPanel.cubeType.text = $"Cube Type: {info.Type}";
         setCubeInfoPanel.isWater.text = info.IsWater ? "Water" : "Not Water";
-        setCubeInfoPanel.color.text = info.Color.ToString();
+        setCubeInfoPanel.color.text = $"Shared Color: {info.Color.ToString()}";
     }
 
-    void BakeTerrainProperties(){
+    public void BakeTerrainProperties(){
         var MaterialProp = new MaterialPropertyBlock();
         MaterialProp.SetColor("_Color", info.Color);
         _renderer.SetPropertyBlock(MaterialProp);
         
-        transform.Translate(Vector3.up * (int) info.Height);
+        transform.position = new Vector3(transform.position.x, 5f + (float) info.Height, transform.position.z);
     }
 
 

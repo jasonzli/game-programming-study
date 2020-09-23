@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using Patterns;
+using TMPro;
 
 public class GameBoard : MonoBehaviour
 {
+    public static Action ActButton;
     public enum GameStates{
         SETUP = 0,//initialize with zero for some reason?
         PLAY,
@@ -23,6 +26,14 @@ public class GameBoard : MonoBehaviour
     [SerializeField]
     private Renderer floorRenderer;
 
+    public TextMeshProUGUI text;
+
+    public void JumpButtonClick(){
+        if (m_fsm.GetCurrentState() != m_fsm.GetState(1)){
+            text.alpha = 1;
+        }
+        ActButton?.Invoke();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +47,15 @@ public class GameBoard : MonoBehaviour
         //set the states of the fsm
 
         m_fsm.SetCurrentState(m_fsm.GetState((int)GameStates.SETUP));
+    }
+
+    public void EnterCleanUpState(){
+        if (m_fsm.GetCurrentState() != m_fsm.GetState(1)){
+            text.alpha = 1;
+        }
+        if (m_fsm.GetCurrentState() == m_fsm.GetState(1)){
+            m_fsm.SetCurrentState(m_fsm.GetState((int) GameStates.CLEANUP));
+        }
     }
 
     Vector3[] GetInitialPositions(Transform transformHolder){
@@ -59,7 +79,7 @@ public class GameBoard : MonoBehaviour
     public void RandomizeActivePieces(){
         foreach (Transform hero in Pieces){
             hero.gameObject.SetActive(true);
-            if (Random.Range(0,1f) < .4f){
+            if (UnityEngine.Random.Range(0,1f) < .4f){
                 hero.gameObject.SetActive(false);
             }
         }
@@ -82,8 +102,8 @@ public class GameBoard : MonoBehaviour
 
     public void ShuffleFloorColors(){
         MaterialPropertyBlock newColor = new MaterialPropertyBlock();
-        newColor.SetColor("_Color", Random.ColorHSV());
-        newColor.SetFloat("_Glossiness", Random.Range(0f,1f));
+        newColor.SetColor("_Color", UnityEngine.Random.ColorHSV());
+        newColor.SetFloat("_Glossiness", UnityEngine.Random.Range(0f,1f));
 
         floorRenderer.SetPropertyBlock(newColor);
     }

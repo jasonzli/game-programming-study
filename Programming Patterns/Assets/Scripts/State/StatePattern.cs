@@ -53,7 +53,9 @@ namespace Patterns
         public State GetState(int key){
             return m_states[key];
         }
-
+        public State GetCurrentState(){
+            return m_currentState;
+        }
         public void SetCurrentState(State state){
             if (m_currentState != null)
             {

@@ -48,7 +48,7 @@ public class WorldMaker : MonoBehaviour
                 Matrix4x4 local = transform.localToWorldMatrix;
                 Vector3 cubePos = local.MultiplyPoint(new Vector3(i,j,0));
                 var newTerrain = Instantiate(cubePrefab,cubePos,Quaternion.identity,transform);
-                newTerrain.GetComponent<Terrain>().Info = cubeData[Random.Range(0,3)];
+                newTerrain.GetComponent<Terrain>().Info = cubeData[(int)(Mathf.Floor(Mathf.PerlinNoise((i*.3f + Time.time),(j*.3f + Time.time))*3f))];
                 //newTerrain.GetComponent<Terrain>().BakeTerrainProperties();
                 world.Add(newTerrain);
             }

@@ -17,17 +17,29 @@ public class Main : MonoBehaviour
 
     public List<GameObject> objects;
 
+
+    public void ChangeComponents(){
+        List<GameObject> newObjects = new List<GameObject>(objects.Count);
+        foreach (GameObject o in objects){
+            var pos = o.transform.position;
+            var s = ObjectFactory._Shapes[_ShapePrimitive.value];;
+            var newObject = GameObject.CreatePrimitive(s);
+            var mType = ObjectFactory._LimitedMovementTypes[_MovementComponent.value];
+            if (mType != null) newObject.AddComponent(mType);
+            var dType = ObjectFactory._ExtraTypes[_BonusComponent.value];
+            if (dType != null) newObject.AddComponent(dType);
+            
+            newObject.transform.position = pos;
+            newObjects.Add(newObject);
+            GameObject.Destroy(o);
+        }
+        objects = newObjects;
+        
+    }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            var position = Utility.GetMouseInWorldCoordinates();
-            position.z = 0f;
-
-            var newObject = ObjectFactory.CreateObject(_ShapePrimitive.value,_MovementComponent.value,_BonusComponent.value);
-            newObject.transform.position = position;
-        }
+   
     }
 
 }

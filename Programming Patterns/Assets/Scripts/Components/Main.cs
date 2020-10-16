@@ -15,6 +15,7 @@ public class Main : MonoBehaviour
     public TMP_Dropdown _MovementComponent;
     public TMP_Dropdown _BonusComponent;  
 
+    public List<GameObject> objects;
 
     // Update is called once per frame
     void Update()

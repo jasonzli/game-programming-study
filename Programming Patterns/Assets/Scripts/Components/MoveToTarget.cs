@@ -19,6 +19,7 @@ public class MoveToTarget : MonoBehaviour
 
         var pos = transform.position;
         var offsetToTarget = Utility.GetXYOffset (pos, target.position);
+
         Vector3 offset = offsetToTarget.normalized * Time.deltaTime * speed.value;
         
         // We don't want to overshoot so we clamp the distance traveled to be 
@@ -26,6 +27,11 @@ public class MoveToTarget : MonoBehaviour
         var distanceToTarget = offsetToTarget.magnitude;
         offset = Vector3.ClampMagnitude(offset, distanceToTarget);
 
-        transform.position += offset;
+        Vector3 dir = (target.position - transform.position);
+        Vector3 displacement = dir * Time.deltaTime * speed.value;
+
+        Debug.Log(Vector3.Distance(target.position,transform.position));
+
+        transform.position += displacement;
     }
 }

@@ -7,10 +7,11 @@ using System;
 public static class ObjectFactory
 {
 
-    private static PrimitiveType[] _Shapes = {PrimitiveType.Sphere,PrimitiveType.Capsule,PrimitiveType.Cube};
+    public static PrimitiveType[] _Shapes = {PrimitiveType.Sphere,PrimitiveType.Capsule,PrimitiveType.Cube};
     //using Type requires System
-    private static Type[] _MovementTypes = {typeof(ChaseMouse),typeof(AvoidMouse),typeof(RandomWalk),typeof(WalkRight)};
-    private static Type[] _ExtraTypes = {null, typeof(ColorPulse),typeof(Pulsate)};
+    public static Type[] _MovementTypes = {typeof(ChaseMouse),typeof(AvoidMouse),typeof(RandomWalk),typeof(WalkRight)};
+    public static Type[] _LimitedMovementTypes = {null,typeof(RandomWalk),typeof(WalkRight)};
+    public static Type[] _ExtraTypes = {null, typeof(ColorPulse),typeof(Pulsate)};
 
     //This CreateObject is specifically linked up to the Component pattern implementation
     //It's meant to work with that interface alone -- although we could do other things too.

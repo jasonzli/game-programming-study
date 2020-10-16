@@ -26,8 +26,8 @@ public static class Utility
     public static Vector2 GetXYOffset(Vector3 from, Vector3 to)
     {
         //align the z coords
-        from.z = 0;
-        to.z = 0;
+        from.y = 1f;
+        to.y = 1f;
         return to-from;
     }
 }

@@ -12,6 +12,12 @@ public class WalkRight : MonoBehaviour
     }
     private void Update()
     {
-        transform.Translate(Vector3.right * speed.value * Time.deltaTime);
+        var displacement = 1f * speed.value * Time.deltaTime;
+        if (transform.position.x + displacement > 4f){
+            displacement = 0f;
+        }
+        var right = new Vector3( displacement, 0f, 0f );
+
+        transform.position += right;//(Vector3.right * speed.value * Time.deltaTime);
     }
 }

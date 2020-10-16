@@ -14,9 +14,9 @@ public class RandomWalk : MonoBehaviour
     {
         // Have we reached the target?
         var target = GetComponent<Target>();
-        var distanceToTarget = Utility.GetXYOffset(transform.position, target.position).magnitude;
-        var desiredDistance = 0f;
-        var hasArrived = Mathf.Approximately(distanceToTarget, desiredDistance); 
+        var distanceToTarget = (transform.position - target.position).magnitude;//Utility.GetXYOffset(transform.position, target.position).magnitude;
+        var hasArrived = distanceToTarget < .001f; //Mathf.Approximately(distanceToTarget, desiredDistance); 
+
         // if so pick a new target
         if (hasArrived)
         {
@@ -27,7 +27,6 @@ public class RandomWalk : MonoBehaviour
     private void SetRandomTarget()
     {
         var target = GetComponent<Target>();
-        Vector3 offset = Random.insideUnitCircle * distance;
-        target.position = transform.position + offset;
-    }
+        target.position = new Vector3( Random.Range(-4f, 4f), 1f, Random.Range(-4f, 4f) ) ;
+        }
 }

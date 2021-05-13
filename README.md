@@ -1,4 +1,4 @@
-# Programming Patterns for a Game Designer
+# Game Design with Programming Patterns
 Game Design with Programming Patterns is an interactive collection and short essay series examining how software design can aid a digital game designer.
 
 Designing a digital game should be in concert with the limitations and constraints of the form. And a lot of game design emphasizes analog prototyping with dice, paper, and other tools. But creating a digital game requires manipulation of digital components. An analog-first approach means that digital creation is an act of translation: mostly implementing an existing paper design in a digital format. This doesn't allow for a designer's creativity to be emphasized in the process.
